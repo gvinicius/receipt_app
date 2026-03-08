@@ -3,8 +3,8 @@ require_relative './price_modifier'
 require 'rspec'
 
 RSpec.describe Product do
-  let!(:price_modifier) { PriceModifier.new(:imported, 0.01) }
-  let!(:product) { Product.new("Widget", 10, [price_modifier]) }
+  let(:price_modifier) { PriceModifier.new(:imported, 0.01) }
+  let(:product) { Product.new("Widget", 10, [price_modifier]) }
 
   describe "#initialize" do
     it "sets the name, price and modifiers" do

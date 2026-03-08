@@ -10,6 +10,6 @@ class Product
   end
 
   def final_price
-    price*(1 + price_modifiers.map(&:tax).map(&:to_f).sum)
+    price*(1 + price_modifiers.to_a.map(&:tax).map(&:to_f).sum.to_f)
   end
 end
