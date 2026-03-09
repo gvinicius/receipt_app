@@ -9,6 +9,6 @@ class OrderItem
   end
 
   def display
-    "#{quantity} #{product.name}: #{quantity*product.final_price.round(2)}"
+    "#{quantity} #{product.name}: #{'%.2f' % (quantity*product.final_price)}"
   end
 end

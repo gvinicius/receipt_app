@@ -9,7 +9,15 @@ class Product
     @price_modifiers = price_modifiers
   end
 
+ def taxed_price
+   price_modifiers.to_a.map(&:tax).map(&:to_f).sum.to_f
+ end
+
+ def basically_taxed_price
+   price_modifiers.select { |element| element.type == :base_tax }.to_a.map(&:tax).map(&:to_f).sum.to_f
+ end
+
   def final_price
-    price*(1 + price_modifiers.to_a.map(&:tax).map(&:to_f).sum.to_f)
+    price*(1 + taxed_price)
   end
 end
