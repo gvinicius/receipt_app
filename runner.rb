@@ -34,7 +34,13 @@ end
 
 order_items.each { |order_item| puts order_item.display }
 
-total = order_items.map { |item| item.quantity.to_f*(item.product.final_price.to_f).to_f }.sum.to_f
-total_tax = order_items.map { |item| item.quantity*(item.product.basically_taxed_price.to_f) }.sum.to_f
-puts "Sales Taxes: #{'%.2f' % order_items.map { |item| (total*total_tax).round(2)}}"
+total = order_items.map { |item| item.quantity.to_f * item.product.final_price.to_f }.sum
+
+total_tax_sum = order_items.map do |item|
+  if item.product.price_modifiers.any? { |modifier| modifier.type == base_tax_price_modifier.type }
+    item.quantity * base_tax_price_modifier.tax * item.product.price
+  end
+end.compact.sum
+
+puts "Sales Taxes: #{'%.2f' % total_tax_sum.round(2)}"
 puts "Total: #{'%.2f' % total}"
