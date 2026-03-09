@@ -1,4 +1,6 @@
-require_relative './price_modifier'
+# frozen_string_literal: true
+
+require_relative 'price_modifier'
 
 class Product
   attr_reader :name, :price, :price_modifiers
@@ -9,15 +11,11 @@ class Product
     @price_modifiers = price_modifiers
   end
 
- def taxed_price
-   price_modifiers.to_a.map(&:tax).map(&:to_f).sum.to_f
- end
-
- def basically_taxed_price
-   price_modifiers.select { |element| element.type == :base_tax }.to_a.map(&:tax).map(&:to_f).sum.to_f
- end
+  def tax_amount
+    price_modifiers.to_a.map { |m| (m.tax * price / 0.05).ceil * 0.05 }.sum
+  end
 
   def final_price
-    price*(1 + taxed_price)
+    price + tax_amount
   end
 end
